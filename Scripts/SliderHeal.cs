@@ -23,12 +23,12 @@ public class SliderHeal : MonoBehaviour
 
     private void OnEnable()
     {
-       _player.ChangedHealth += ChangeInfo; 
+       _player.HealthChanged += ChangeInfo; 
     }
 
     private void OnDisable()
     {
-       _player.ChangedHealth -= ChangeInfo;
+       _player.HealthChanged -= ChangeInfo;
     }
 
     private void ChangeInfo()

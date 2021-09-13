@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public float MaxHealth => _maxHealth;
     public float MinHealth => 0;
 
-    public UnityAction ChangedHealth;
+    public event UnityAction HealthChanged;
 
     public void Heal()
     {
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
             _currentHealth = _maxHealth;
         }
        
-        ChangedHealth?.Invoke();
+        HealthChanged?.Invoke();
     }
 
     public void Damage()
@@ -37,6 +37,6 @@ public class Player : MonoBehaviour
             _currentHealth = 0;
         }
 
-        ChangedHealth?.Invoke();
+        HealthChanged?.Invoke();
     }
 }
