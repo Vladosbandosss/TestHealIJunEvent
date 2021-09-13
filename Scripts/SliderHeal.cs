@@ -9,7 +9,7 @@ public class SliderHeal : MonoBehaviour
     [SerializeField] private Player _player;
 
     private float _health;
-    private float _smothing = 5f;
+    private float _smothing = 10f;
 
     private void Awake()
     {
@@ -21,29 +21,45 @@ public class SliderHeal : MonoBehaviour
 
     private void OnEnable()
     {
-       Player.PlayerChangedHealth += ChangeInfo; 
+       _player.PlayerChangedHealth += ChangeInfo; 
     }
+
     private void OnDisable()
     {
-       Player.PlayerChangedHealth -= ChangeInfo;
+       _player.PlayerChangedHealth -= ChangeInfo;
     }
-    private void Update()
-    {
-       ShowInfo();
-    }
-    private void ShowInfo()
-    { 
 
-        if (_healthbar.value != _health)
-        {
-
-           _healthbar.value = Mathf.Lerp(_healthbar.value, _health, _smothing * Time.deltaTime);
-
-        }
-    }
-    
     private void ChangeInfo()
     {
-        _health = _player.CurrentHealth;
+        StartCoroutine(nameof(Changehealth));
     }
+
+    private IEnumerator Changehealth()
+    {
+        _health = _player.CurrentHealth;
+
+        while (_healthbar.value != _health)
+        {
+           
+            _healthbar.value = Mathf.MoveTowards(_healthbar.value, _health, _smothing * Time.deltaTime);
+
+            yield return null;
+
+            if(_healthbar.value == _health)
+            {
+
+                InterruptHealing();
+
+            }
+           
+        }
+
+        yield break;
+    }
+
+    private void InterruptHealing()
+    {
+        StopCoroutine(nameof(Changehealth));
+    }
+
 }
